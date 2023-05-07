@@ -3,10 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const cors = require('cors');
-
 const port = 4000
-// const expressFileUpload = require('express-fileupload');
-const morgan = require('morgan')
+
 //Inicializaciones
 const app = express();
 app.use(cors());
