@@ -15,10 +15,10 @@ app.use(bodyParser.json());
 
 //Definicion de pool
 const pool = new Pool({
-  host: "localhost",
+  host: "dpg-chc2jbe7avjcvo1sh8rg-a",
   user: "admin",
-  database: "QueComoDonde",
-  password: "passwds3cur3",
+  database: "quecomodonde",
+  password: "cEdzl9zld7Jg5lgTmBqVKwpPz4YWRtMU",
   port: "5432"
 });
 
