@@ -240,7 +240,7 @@ app.put("/api/v1/publicaciones/:id", async (req, res) => {
   } = req.body
   try {
     const publ = await pool.query(
-      `UPDATE publications SET publication_name=$1, publication_price=$2, publication_description=$3, keyword1=$4, keyword2=$5, publication_qty=$6, comuna_id=$7, region_id=$8, imgdir=$9 WHERE user_id=$10`,
+      `UPDATE publications SET publication_name=$1, publication_price=$2, publication_description=$3, keyword1=$4, keyword2=$5, publication_qty=$6, comuna_id=$7, region_id=$8, imgdir=$9 WHERE publication_id=$10`,
       [
         publication_name,
         publication_price,
@@ -262,7 +262,7 @@ app.put("/api/v1/publicaciones/:id", async (req, res) => {
 app.delete("/api/v1/publicaciones/:id", async (req, res) => {
   try {
     var id = req.params.id
-    let usuarios = await pool.query('delete from publications where user_id = $1', [id]);
+    let usuarios = await pool.query('delete from publications where publication_id = $1', [id]);
     res.json(usuarios.rows)
   } catch (err) {
     console.error(err);
