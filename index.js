@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const port = 4000
 // const expressFileUpload = require('express-fileupload');
-// const morgan = require('morgan')
+const morgan = require('morgan')
 //Inicializaciones
 const app = express();
 app.use(cors());
