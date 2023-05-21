@@ -3,8 +3,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const cors = require('cors');
-const port = 4000
 
+const port = 4000
+// const expressFileUpload = require('express-fileupload');
+const morgan = require('morgan')
 //Inicializaciones
 const app = express();
 app.use(cors());
@@ -13,10 +15,10 @@ app.use(bodyParser.json());
 
 //Definicion de pool
 const pool = new Pool({
-  host: "dpg-chc2jbe7avjcvo1sh8rg-a",
+  host: "localhost",
   user: "admin",
-  database: "quecomodonde",
-  password: "cEdzl9zld7Jg5lgTmBqVKwpPz4YWRtMU",
+  database: "QueComoDonde",
+  password: "passwds3cur3",
   port: "5432"
 });
 
@@ -120,6 +122,19 @@ app.get("/api/v1/simplesearch/:consulta", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+//Ultimas 7 publicaciones
+
+app.get("/api/v1/ultimaspublicaciones", async (req, res) => {
+  try {
+    let ultimas = await pool.query('SELECT * FROM publications ORDER BY publication_id DESC LIMIT 7;')
+    res.json(ultimas.rows);
+  }
+  catch (err) {
+    console.log(err);
+  }
+});
+
 
 //CRUD usuarios***********************************************************************************************
 
@@ -240,7 +255,7 @@ app.put("/api/v1/publicaciones/:id", async (req, res) => {
   } = req.body
   try {
     const publ = await pool.query(
-      `UPDATE publications SET publication_name=$1, publication_price=$2, publication_description=$3, keyword1=$4, keyword2=$5, publication_qty=$6, comuna_id=$7, region_id=$8, imgdir=$9 WHERE publication_id=$10`,
+      `UPDATE publications SET publication_name=$1, publication_price=$2, publication_description=$3, keyword1=$4, keyword2=$5, publication_qty=$6, comuna_id=$7, region_id=$8, imgdir=$9 WHERE user_id=$10`,
       [
         publication_name,
         publication_price,
@@ -262,7 +277,7 @@ app.put("/api/v1/publicaciones/:id", async (req, res) => {
 app.delete("/api/v1/publicaciones/:id", async (req, res) => {
   try {
     var id = req.params.id
-    let usuarios = await pool.query('delete from publications where publication_id = $1', [id]);
+    let usuarios = await pool.query('delete from publications where user_id = $1', [id]);
     res.json(usuarios.rows)
   } catch (err) {
     console.error(err);
