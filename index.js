@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const cors = require('cors');
 require('dotenv').config(); 
-console.log(process.env.PORTO)
+console.log(process.env.USERO)
 console.log(process.env.PASSWORDA)
 const port = 4000
 // const expressFileUpload = require('express-fileupload');
@@ -21,7 +21,7 @@ const pool = new Pool({
   user: process.env.USERO,
   database: process.DATABASEC,
   password: process.PASSWORDA,
-  port: process.env.PORTO
+  port: process.env.PORTO,
 });
 
 //******************Rutas de API ***************************************************
