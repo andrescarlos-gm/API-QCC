@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const cors = require('cors');
+require('dotenv').config();
 
 const port = 4000
 // const expressFileUpload = require('express-fileupload');
@@ -15,11 +16,11 @@ app.use(bodyParser.json());
 
 //Definicion de pool
 const pool = new Pool({
-  host: "localhost",
-  user: "admin",
-  database: "QueComoDonde",
-  password: "passwds3cur3",
-  port: "5432"
+  host: process.env.HOST,
+  user: process.env.USER,
+  database: process.DATABASE,
+  password: process.PASSWORD,
+  port: process.env.PORT
 });
 
 //******************Rutas de API ***************************************************
