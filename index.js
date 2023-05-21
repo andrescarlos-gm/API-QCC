@@ -3,8 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const cors = require('cors');
-import dotenv from 'dotenv';
-dotenv.config();
+require('dotenv').config(); 
 console.log(process.env.PORT)
 const port = 4000
 // const expressFileUpload = require('express-fileupload');
