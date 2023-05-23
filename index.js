@@ -279,8 +279,8 @@ app.put("/api/v1/publicaciones/:id", async (req, res) => {
 app.delete("/api/v1/publicaciones/:id", async (req, res) => {
   try {
     var id = req.params.id
-    let usuarios = await pool.query('delete from publications where user_id = $1', [id]);
-    res.json(usuarios.rows)
+    let nomPubl = await pool.query('delete from publications where publication_id = $1', [id]);
+    res.json(nomPubl.rows)
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
