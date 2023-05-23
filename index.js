@@ -184,7 +184,6 @@ app.delete("/api/v1/users/:id", async (req, res) => {
 });
 //CRUD PUBLICACIONES *****************************************************************
 
-// Crear Publicacion
 app.get("/api/v1/publicaciones", async (req, res) => {
   try {
     let publicaciones = await pool.query(`SELECT publication_id, publication_name, publication_price, publication_description, keyword1, keyword2, publication_qty, region_id, comuna_id, user_id, imgdir
@@ -257,7 +256,7 @@ app.put("/api/v1/publicaciones/:id", async (req, res) => {
   } = req.body
   try {
     const publ = await pool.query(
-      `UPDATE publications SET publication_name=$1, publication_price=$2, publication_description=$3, keyword1=$4, keyword2=$5, publication_qty=$6, comuna_id=$7, region_id=$8, imgdir=$9 WHERE user_id=$10`,
+      `UPDATE publications SET publication_name=$1, publication_price=$2, publication_description=$3, keyword1=$4, keyword2=$5, publication_qty=$6, comuna_id=$7, region_id=$8, imgdir=$9 WHERE publication_id=$10`,
       [
         publication_name,
         publication_price,
