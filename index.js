@@ -240,9 +240,7 @@ app.post("/api/v1/publicaciones", async (req, res) => {
   console.log('Publicación creada correctamente')
 });
 app.put("/api/v1/publicaciones/:id", async (req, res) => {
-
-  console.log(req.body)
-  const user_id = req.params.id;
+  const publication_id = req.params.id;
   const {
     publication_name,
     publication_price,
@@ -267,7 +265,7 @@ app.put("/api/v1/publicaciones/:id", async (req, res) => {
         comuna_id,
         region_id,
         imgdir,
-        user_id,
+        publication_id
       ])
     res.json(publ.rows);
   }
