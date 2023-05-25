@@ -41,7 +41,7 @@ app.get("/api/v1/publications/:user_id", async (req, res) => {
 app.get("/api/v1/publication/:publication_id", async (req, res) => {
   try {
     const { publication_id } = req.params;
-    const publicacion = await pool.query('SELECT * FROM publications WHERE publication_id = $1', [publication_id]);
+    const publicacion = await pool.query('SELECT uc.email, uc.username, uc.profilepic, p.imgdir, p.publication_name, p.publication_price, p.publication_description, p.keyword1, p.keyword2 FROM publications p INNER JOIN user_credentials uc ON p.user_id = uc.user_id WHERE publication_id = $1', [publication_id]);
     res.json(publicacion.rows);
   } catch (err) {
     console.error(err);
