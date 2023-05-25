@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const cors = require('cors');
-require('dotenv').config(); 
+require('dotenv').config();
 console.log(process.env.USERO)
 console.log(process.env.PASSWORDA)
 const port = 4000
@@ -31,12 +31,22 @@ app.get("/api/v1/publications/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
     const publicaciones = await pool.query('SELECT * FROM publications WHERE user_id = $1', [user_id]);
-    console.log(publicaciones.rows);
     res.json(publicaciones.rows);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
-  }
+  };
+});
+//Obtener publicación por su id
+app.get("/api/v1/publication/:publication_id", async (req, res) => {
+  try {
+    const { publication_id } = req.params;
+    const publicacion = await pool.query('SELECT * FROM publications WHERE publication_id = $1', [publication_id]);
+    res.json(publicacion);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  };
 });
 //Obtener todas las regiones y ciudades
 app.get("/api/v1/regiones", async (req, res) => {
@@ -124,9 +134,7 @@ app.get("/api/v1/simplesearch/:consulta", async (req, res) => {
     res.sendStatus(500);
   }
 });
-
 //Ultimas 7 publicaciones
-
 app.get("/api/v1/ultimaspublicaciones", async (req, res) => {
   try {
     let ultimas = await pool.query('SELECT * FROM publications ORDER BY publication_id DESC LIMIT 7;')
@@ -136,10 +144,7 @@ app.get("/api/v1/ultimaspublicaciones", async (req, res) => {
     console.log(err);
   }
 });
-
-
 //CRUD usuarios***********************************************************************************************
-
 app.get("/api/v1/users", async (req, res) => {
   try {
     let usuarios = await pool.query('select * from user_credentials');
