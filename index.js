@@ -42,7 +42,7 @@ app.get("/api/v1/publication/:publication_id", async (req, res) => {
   try {
     const { publication_id } = req.params;
     const publicacion = await pool.query('SELECT * FROM publications WHERE publication_id = $1', [publication_id]);
-    res.json(publicacion);
+    res.json(publicacion.rows);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
