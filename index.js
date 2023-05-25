@@ -120,13 +120,17 @@ app.post("/api/v1/publicaciones", async (req, res) => {
 
 //Buscar en publicaciones de acuerdo a palabras ingresadas, consulta usada en la pagina principal.
 app.get("/api/v1/simplesearch/:consulta", async (req, res) => {
+  // Agregar extensión **CREATE EXTENSION unaccent;** para hacer que no sea sensible a los tildes
   try {
     const { consulta } = req.params;
     console.log(consulta)
-    let publicaciones = await pool.query(`SELECT uc.email, uc.username, uc.profilepic ,  p.imgdir, p.publication_name, p.publication_price, p.publication_description, p.keyword1, p.keyword2
+    let publicaciones = await pool.query(`SELECT uc.email, uc.username, uc.profilepic, p.imgdir, p.publication_name, p.publication_price, p.publication_description, p.keyword1, p.keyword2
     FROM publications p
     INNER JOIN user_credentials uc ON p.user_id = uc.user_id
-    WHERE p.publication_name ILIKE '%' || $1 || '%' OR p.publication_description ILIKE '%' || $1 || '%' OR p.keyword1 ILIKE '%' || $1 || '%' OR p.keyword2 ILIKE '%' || $1 || '%';`, [consulta]);
+    WHERE unaccent(p.publication_name) ILIKE '%' || unaccent($1) || '%'
+      OR unaccent(p.publication_description) ILIKE '%' || unaccent($1) || '%'
+      OR unaccent(p.keyword1) ILIKE '%' || unaccent($1) || '%'
+      OR unaccent(p.keyword2) ILIKE '%' || unaccent($1) || '%';`, [consulta]);
     console.log(publicaciones.rows);
     res.json(publicaciones.rows);
   } catch (err) {
