@@ -41,7 +41,7 @@ app.get("/api/v1/publications/:user_id", async (req, res) => {
 app.get("/api/v1/publication/:publication_id", async (req, res) => {
   try {
     const { publication_id } = req.params;
-    const publicacion = await pool.query('SELECT uc.email, uc.username, uc.profilepic, p.imgdir, p.publication_name, p.publication_price, p.publication_description, p.keyword1, p.keyword2 FROM publications p INNER JOIN user_credentials uc ON p.user_id = uc.user_id WHERE publication_id = $1', [publication_id]);
+    const publicacion = await pool.query('SELECT uc.email, uc.username, uc.profilepic, p.imgdir, p.publication_name, p.publication_price, p.publication_description, p.keyword1, p.keyword2, r.nombre_region, c.nombre_comuna FROM publications p INNER JOIN user_credentials uc ON p.user_id = uc.user_id INNER JOIN regions r ON p.region_id = r.region_id INNER JOIN comunas c ON p.comuna_id = c.comuna_id WHERE publication_id = $1;', [publication_id]);
     res.json(publicacion.rows);
   } catch (err) {
     console.error(err);
@@ -124,9 +124,11 @@ app.get("/api/v1/simplesearch/:consulta", async (req, res) => {
   try {
     const { consulta } = req.params;
     console.log(consulta)
-    let publicaciones = await pool.query(`SELECT uc.email, uc.username, uc.profilepic, p.imgdir, p.publication_name, p.publication_price, p.publication_description, p.keyword1, p.keyword2
+    let publicaciones = await pool.query(`SELECT uc.email, uc.username, uc.profilepic, p.imgdir, p.publication_name, p.publication_price, p.publication_description, p.keyword1, p.keyword2, r.nombre_region, c.nombre_comuna
     FROM publications p
     INNER JOIN user_credentials uc ON p.user_id = uc.user_id
+    LEFT JOIN regions r ON p.region_id = r.region_id
+    LEFT JOIN comunas c ON p.comuna_id = c.comuna_id
     WHERE unaccent(p.publication_name) ILIKE '%' || unaccent($1) || '%'
       OR unaccent(p.publication_description) ILIKE '%' || unaccent($1) || '%'
       OR unaccent(p.keyword1) ILIKE '%' || unaccent($1) || '%'
